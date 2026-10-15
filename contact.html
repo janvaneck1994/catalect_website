@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — catalect</title>
+  <meta name="description" content="Tell catalect about your reaction and process requirements, and we will discuss how designed enzymes could help.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="Contact — catalect">
+  <meta property="og:description" content="Tell us about your reaction and process requirements.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="wordmark" href="index.html">catalect</a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="index.html#approach">Our approach</a>
+        <a href="index.html#team">Team</a>
+        <a class="btn btn--outline" href="contact.html" aria-current="page">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="container">
+        <p class="eyebrow">Contact</p>
+        <h1>Tell us about your reaction.</h1>
+        <p>The more concrete the chemistry and the conditions, the more useful our first answer will be.</p>
+      </div>
+    </section>
+
+    <section class="section section--tint">
+      <div class="container contact-grid">
+        <div class="contact-aside">
+          <h2>Get in touch.</h2>
+          <p class="section__lead">We read every message and reply to the ones we can genuinely help with.</p>
+          <dl>
+            <div>
+              <dt>Email</dt>
+              <dd><a href="mailto:hello@catalect.com">hello@catalect.com</a></dd>
+            </div>
+            <div>
+              <dt>Partnering</dt>
+              <dd>Reaction briefs, feasibility and joint programmes</dd>
+            </div>
+            <div>
+              <dt>Careers</dt>
+              <dd>Protein design, computational biology, process chemistry</dd>
+            </div>
+          </dl>
+        </div>
+
+        <form class="form" data-contact-form>
+          <div class="field field--row">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" autocomplete="organization">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label for="application">Reaction or application</label>
+            <input id="application" name="application" type="text" placeholder="e.g. selective amide formation, 45 &deg;C, aqueous">
+          </div>
+
+          <div class="field">
+            <label for="message">What are you trying to do?</label>
+            <textarea id="message" name="message" placeholder="Target transformation, current route, operating window, and what would make a new enzyme worth it."></textarea>
+          </div>
+
+          <div>
+            <button class="btn btn--primary" type="submit">
+              Send message
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <p class="form__note">We use what you send only to reply to your enquiry. Please leave out anything confidential until we have an agreement in place.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div class="dark-block">
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <div class="footer-brand">
+          <a class="wordmark" href="index.html">catalect</a>
+          <span aria-hidden="true">|</span>
+          <p>Industrial enzymes, designed from the start.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="index.html">Home</a>
+          <a href="index.html#approach">Our approach</a>
+          <a href="index.html#team">Team</a>
+        </nav>
+      </div>
+      <div class="container site-footer__legal">
+        <p>&copy; <span data-year>2026</span> catalect. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/js/site.js" defer></script>
+  <script>
+    document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
+
+    /* Without a form backend configured, compose the message in the visitor's
+       own mail client so nothing is silently dropped. Point the form's action
+       at a hosted handler (Formspree, Netlify Forms, your own API) when ready. */
+    (function () {
+      var form = document.querySelector('[data-contact-form]');
+      if (!form) return;
+
+      form.addEventListener('submit', function (event) {
+        if (form.getAttribute('action')) return;
+        event.preventDefault();
+
+        var get = function (name) { return (form.elements[name].value || '').trim(); };
+        var body = [
+          'Name: ' + get('name'),
+          'Company: ' + get('company'),
+          'Email: ' + get('email'),
+          'Reaction / application: ' + get('application'),
+          '',
+          get('message')
+        ].join('\n');
+
+        window.location.href = 'mailto:hello@catalect.com'
+          + '?subject=' + encodeURIComponent('Enquiry from ' + (get('company') || get('name') || 'the website'))
+          + '&body=' + encodeURIComponent(body);
+      });
+    })();
+  </script>
+</body>
+</html>
