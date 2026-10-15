@@ -19,14 +19,14 @@
 
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="wordmark" href="index.html">catalect</a>
+      <a class="wordmark" href="index.html">catalect.</a>
 
       <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
         <span></span><span></span><span></span>
       </button>
 
       <nav class="site-nav" aria-label="Primary">
-        <a href="index.html#approach">Our approach</a>
+        <a href="index.html#technology">Technology</a>
         <a href="index.html#team">Team</a>
         <a class="btn btn--outline" href="contact.html" aria-current="page">Contact</a>
       </nav>
@@ -34,33 +34,11 @@
   </header>
 
   <main>
-    <section class="page-head">
-      <div class="container">
-        <p class="eyebrow">Contact</p>
-        <h1>Tell us about your reaction.</h1>
-        <p>The more concrete the chemistry and the conditions, the more useful our first answer will be.</p>
-      </div>
-    </section>
-
     <section class="section section--tint">
       <div class="container contact-grid">
         <div class="contact-aside">
-          <h2>Get in touch.</h2>
-          <p class="section__lead">We read every message and reply to the ones we can genuinely help with.</p>
-          <dl>
-            <div>
-              <dt>Email</dt>
-              <dd><a href="mailto:hello@catalect.com">hello@catalect.com</a></dd>
-            </div>
-            <div>
-              <dt>Partnering</dt>
-              <dd>Reaction briefs, feasibility and joint programmes</dd>
-            </div>
-            <div>
-              <dt>Careers</dt>
-              <dd>Protein design, computational biology, process chemistry</dd>
-            </div>
-          </dl>
+          <h1>Get in touch.</h1>
+          <p class="section__lead">We're interested in connecting with companies and researchers working on challenging biocatalytic applications.</p>
         </div>
 
         <form class="form" data-contact-form>
@@ -81,13 +59,8 @@
           </div>
 
           <div class="field">
-            <label for="application">Reaction or application</label>
-            <input id="application" name="application" type="text" placeholder="e.g. selective amide formation, 45 &deg;C, aqueous">
-          </div>
-
-          <div class="field">
-            <label for="message">What are you trying to do?</label>
-            <textarea id="message" name="message" placeholder="Target transformation, current route, operating window, and what would make a new enzyme worth it."></textarea>
+            <label for="message">Message</label>
+            <textarea id="message" name="message"></textarea>
           </div>
 
           <div>
@@ -98,8 +71,6 @@
               </svg>
             </button>
           </div>
-
-          <p class="form__note">We use what you send only to reply to your enquiry. Please leave out anything confidential until we have an agreement in place.</p>
         </form>
       </div>
     </section>
@@ -109,13 +80,13 @@
     <footer class="site-footer">
       <div class="container site-footer__inner">
         <div class="footer-brand">
-          <a class="wordmark" href="index.html">catalect</a>
+          <a class="wordmark" href="index.html">catalect.</a>
           <span aria-hidden="true">|</span>
-          <p>Industrial enzymes, designed from the start.</p>
+          <p>Designing enzymes from scratch</p>
         </div>
         <nav class="footer-nav" aria-label="Footer">
           <a href="index.html">Home</a>
-          <a href="index.html#approach">Our approach</a>
+          <a href="index.html#technology">Technology</a>
           <a href="index.html#team">Team</a>
         </nav>
       </div>
@@ -145,7 +116,6 @@
           'Name: ' + get('name'),
           'Company: ' + get('company'),
           'Email: ' + get('email'),
-          'Reaction / application: ' + get('application'),
           '',
           get('message')
         ].join('\n');
