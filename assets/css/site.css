@@ -790,8 +790,11 @@ section[id] { scroll-margin-top: var(--header-h); }
 
   #technology { padding-bottom: 56px; }
 
-  /* Flatter artwork on a phone, so the headline and button sit higher. */
-  .hero__art { max-width: 340px; aspect-ratio: 1.25 / 1; }
+  /* Flatter and smaller artwork on a phone, so the headline and button sit
+     higher up the screen. */
+  .hero__art { max-width: 296px; aspect-ratio: 1.25 / 1; }
+
+  .hero__molecule { width: 29%; }
 
   .team-member { max-width: none; flex: 1 1 0; min-width: 0; }
 
