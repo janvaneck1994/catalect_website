@@ -61,7 +61,6 @@
     var reference = Math.min(boxW, boxH);
     var inner = reference * 0.135;
     var outer = reference * 0.465;
-    var maxRadius = 0;
     var maxX = 0;
     var maxY = 0;
     var i, s;
@@ -91,8 +90,6 @@
         dirs[s * 2] = dx;
         dirs[s * 2 + 1] = dy;
 
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > maxRadius) maxRadius = dist;
         if (Math.abs(dx) > maxX) maxX = Math.abs(dx);
         if (Math.abs(dy) > maxY) maxY = Math.abs(dy);
       }
@@ -100,46 +97,38 @@
       layers.push({ dirs: dirs, t: t });
     }
 
-    if (maxRadius <= 0 || maxX <= 0 || maxY <= 0) return;
+    if (maxX <= 0 || maxY <= 0) return;
 
-    var scaleX, scaleY;
+    /* Fill the box, so the figure takes its proportions from the CSS ratio. */
+    var roomX = (boxW / 2 - PAD) / (1 + BREATH);
+    var roomY = (boxH / 2 - PAD) / (1 + BREATH);
+    var cosT = Math.cos(TWIST);
+    var sinT = Math.sin(TWIST);
 
-    if (Math.abs(boxW / boxH - 1) < 0.02) {
-      /* Square box: fit by radius, so the figure keeps its own proportions. */
-      scaleX = scaleY = (reference / 2 - PAD) / (maxRadius * (1 + BREATH));
-    } else {
-      /* Wider box: fill it, so the figure takes the box's proportions instead
-         of leaving slack at the sides. */
-      var roomX = (boxW / 2 - PAD) / (1 + BREATH);
-      var roomY = (boxH / 2 - PAD) / (1 + BREATH);
-      var cosT = Math.cos(TWIST);
-      var sinT = Math.sin(TWIST);
+    var scaleX = roomX / maxX;
+    var scaleY = roomY / maxY;
 
-      scaleX = roomX / maxX;
-      scaleY = roomY / maxY;
+    /* Then measure what the twist actually costs. Taking the extremes of both
+       axes together would assume one point holds both, which no point does;
+       walking the points keeps the figure close to the edges. */
+    var swungX = 0;
+    var swungY = 0;
 
-      /* Then measure what the twist actually costs. Taking the extremes of
-         both axes together would assume one point holds both, which no point
-         does; walking the points keeps the figure close to the edges. */
-      var swungX = 0;
-      var swungY = 0;
-
-      for (i = 0; i < layers.length; i++) {
-        var pts = layers[i].dirs;
-        for (s = 0; s < pts.length; s += 2) {
-          var ax = Math.abs(pts[s]) * scaleX;
-          var ay = Math.abs(pts[s + 1]) * scaleY;
-          var bx = ax * cosT + ay * sinT;
-          var by = ax * sinT + ay * cosT;
-          if (bx > swungX) swungX = bx;
-          if (by > swungY) swungY = by;
-        }
+    for (i = 0; i < layers.length; i++) {
+      var pts = layers[i].dirs;
+      for (s = 0; s < pts.length; s += 2) {
+        var ax = Math.abs(pts[s]) * scaleX;
+        var ay = Math.abs(pts[s + 1]) * scaleY;
+        var bx = ax * cosT + ay * sinT;
+        var by = ax * sinT + ay * cosT;
+        if (bx > swungX) swungX = bx;
+        if (by > swungY) swungY = by;
       }
-
-      var room = Math.min(roomX / swungX, roomY / swungY);
-      scaleX *= room;
-      scaleY *= room;
     }
+
+    var room = Math.min(roomX / swungX, roomY / swungY);
+    scaleX *= room;
+    scaleY *= room;
 
     for (i = 0; i < layers.length; i++) {
       var d = layers[i].dirs;
