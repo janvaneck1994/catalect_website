@@ -31,7 +31,16 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* No rubber-band past the ends: on a phone the bounce exposed the cream
+     page background below the dark footer, which read as empty space. */
+  overscroll-behavior-y: none;
+  /* Fallback for browsers that bounce anyway (iOS < 16): the body paints
+     over this, so it only shows in the overscroll zones — cream above the
+     page, footer green below it. */
+  background: linear-gradient(var(--cream) 0 50%, var(--green-900) 50% 100%);
+}
 
 body {
   margin: 0;
