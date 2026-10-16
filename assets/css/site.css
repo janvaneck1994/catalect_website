@@ -254,7 +254,7 @@ section[id] { scroll-margin-top: var(--header-h); }
   max-width: calc(100svh - 256px);
 }
 
-.hero__art > canvas { width: 100%; height: 100%; }
+.hero__art > canvas { display: block; width: 100%; height: 100%; }
 
 .hero__molecule {
   position: absolute;
@@ -774,15 +774,22 @@ section[id] { scroll-margin-top: var(--header-h); }
     font-size: 17px;
   }
 
-  .team-grid { gap: 36px 48px; margin-top: 44px; }
-
-  .team-member img { width: 150px; height: 150px; }
+  .team-grid { gap: 28px 32px; margin-top: 44px; flex-wrap: nowrap; }
 
   .hero__inner { padding-bottom: 80px; }
 
   #technology { padding-bottom: 56px; }
 
-  .hero__art { max-width: 340px; }
+  /* Flatter artwork on a phone, so the headline and button sit higher. */
+  .hero__art { max-width: 340px; aspect-ratio: 1.25 / 1; }
+
+  .team-member { max-width: none; flex: 1 1 0; min-width: 0; }
+
+  .team-member img { width: 118px; height: 118px; }
+
+  .team-member h3 { font-size: 1.08rem; }
+
+  .team-member p { margin-top: 6px; font-size: .98rem; }
 
   /* The closing CTA repeats the contact link that is already in the header,
      so on a phone it is just another screen to scroll past. */

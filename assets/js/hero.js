@@ -52,14 +52,18 @@
 
   var harmonics = buildHarmonics(20240917);
   var layers = [];
-  var size = 0;
+  var width = 0;
+  var height = 0;
 
   /* Each layer is stored as offsets from the centre of the field, which lets
      a frame pulse and rotate it with two multiplies per point. */
-  function buildLayers(dimension) {
-    var inner = dimension * 0.135;
-    var outer = dimension * 0.465;
+  function buildLayers(boxW, boxH) {
+    var reference = Math.min(boxW, boxH);
+    var inner = reference * 0.135;
+    var outer = reference * 0.465;
     var maxRadius = 0;
+    var maxX = 0;
+    var maxY = 0;
     var i, s;
 
     layers = [];
@@ -89,28 +93,50 @@
 
         var dist = Math.sqrt(dx * dx + dy * dy);
         if (dist > maxRadius) maxRadius = dist;
+        if (Math.abs(dx) > maxX) maxX = Math.abs(dx);
+        if (Math.abs(dy) > maxY) maxY = Math.abs(dy);
       }
 
       layers.push({ dirs: dirs, t: t });
     }
 
-    if (maxRadius <= 0) return;
+    if (maxRadius <= 0 || maxX <= 0 || maxY <= 0) return;
 
-    /* Fit by radius, with the breath allowed for: every point stays inside
-       the canvas at every phase of the animation, whatever the harmonics do. */
-    var scale = (dimension / 2 - PAD) / (maxRadius * (1 + BREATH));
+    var scaleX, scaleY;
+
+    if (Math.abs(boxW / boxH - 1) < 0.02) {
+      /* Square box: fit by radius, so the figure keeps its own proportions. */
+      scaleX = scaleY = (reference / 2 - PAD) / (maxRadius * (1 + BREATH));
+    } else {
+      /* Wider box: fill it, so the figure takes the box's proportions instead
+         of leaving slack at the sides. */
+      var roomX = (boxW / 2 - PAD) / (1 + BREATH);
+      var roomY = (boxH / 2 - PAD) / (1 + BREATH);
+      var cosT = Math.cos(TWIST);
+      var sinT = Math.sin(TWIST);
+
+      /* Shrink just enough that the twist cannot swing a point past an edge. */
+      var room = Math.min(roomX / (roomX * cosT + roomY * sinT),
+                          roomY / (roomX * sinT + roomY * cosT));
+
+      scaleX = room * roomX / maxX;
+      scaleY = room * roomY / maxY;
+    }
 
     for (i = 0; i < layers.length; i++) {
       var d = layers[i].dirs;
-      for (s = 0; s < d.length; s++) d[s] *= scale;
+      for (s = 0; s < d.length; s += 2) {
+        d[s] *= scaleX;
+        d[s + 1] *= scaleY;
+      }
     }
   }
 
   function paint(progress, clock) {
-    var cx = size / 2;
-    var cy = size / 2;
+    var cx = width / 2;
+    var cy = height / 2;
 
-    ctx.clearRect(0, 0, size, size);
+    ctx.clearRect(0, 0, width, height);
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
 
@@ -192,13 +218,14 @@
   function render(restart) {
     var rect = canvas.getBoundingClientRect();
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    size = Math.max(rect.width, 1);
+    width = Math.max(rect.width, 1);
+    height = Math.max(rect.height, 1);
 
-    canvas.width = Math.round(size * dpr);
-    canvas.height = Math.round(size * dpr);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    buildLayers(size);
+    buildLayers(width, height);
 
     if (restart) intro = 0;
 
