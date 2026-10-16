@@ -115,12 +115,30 @@
       var cosT = Math.cos(TWIST);
       var sinT = Math.sin(TWIST);
 
-      /* Shrink just enough that the twist cannot swing a point past an edge. */
-      var room = Math.min(roomX / (roomX * cosT + roomY * sinT),
-                          roomY / (roomX * sinT + roomY * cosT));
+      scaleX = roomX / maxX;
+      scaleY = roomY / maxY;
 
-      scaleX = room * roomX / maxX;
-      scaleY = room * roomY / maxY;
+      /* Then measure what the twist actually costs. Taking the extremes of
+         both axes together would assume one point holds both, which no point
+         does; walking the points keeps the figure close to the edges. */
+      var swungX = 0;
+      var swungY = 0;
+
+      for (i = 0; i < layers.length; i++) {
+        var pts = layers[i].dirs;
+        for (s = 0; s < pts.length; s += 2) {
+          var ax = Math.abs(pts[s]) * scaleX;
+          var ay = Math.abs(pts[s + 1]) * scaleY;
+          var bx = ax * cosT + ay * sinT;
+          var by = ax * sinT + ay * cosT;
+          if (bx > swungX) swungX = bx;
+          if (by > swungY) swungY = by;
+        }
+      }
+
+      var room = Math.min(roomX / swungX, roomY / swungY);
+      scaleX *= room;
+      scaleY *= room;
     }
 
     for (i = 0; i < layers.length; i++) {
