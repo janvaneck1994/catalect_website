@@ -36,10 +36,9 @@ html {
   /* No rubber-band past the ends: on a phone the bounce exposed the cream
      page background below the dark footer, which read as empty space. */
   overscroll-behavior-y: none;
-  /* Fallback for browsers that bounce anyway (iOS < 16): the body paints
-     over this, so it only shows in the overscroll zones — cream above the
-     page, footer green below it. */
-  background: linear-gradient(var(--cream) 0 50%, var(--green-900) 50% 100%);
+  /* The body paints the page itself, so this only shows where a browser
+     bounces past the ends. Footer green, so no white edge on a phone. */
+  background: var(--green-900);
 }
 
 body {

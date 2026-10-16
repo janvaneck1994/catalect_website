@@ -32,8 +32,8 @@ The header and footer markup is duplicated in both pages — edit both when chan
 
 ## Before going live
 
-- **Email address** — `hello@catalect.com` is a placeholder. Replace it in `contact.html`
-  (the `mailto:` link in the aside and in the form script).
+- **Email address** — the form composes a message to `hello@catalect.bio`; change it in
+  the form script in `contact.html` if that is not the right inbox.
 - **Contact form** — with no `action` on the `<form>`, submitting composes the message in
   the visitor's own mail client. For a real backend, set `action` (and `method="POST"`) on
   the form in `contact.html` to a hosted handler (Formspree, Netlify Forms, your own API);

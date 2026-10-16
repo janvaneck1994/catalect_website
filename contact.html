@@ -120,7 +120,7 @@
           get('message')
         ].join('\n');
 
-        window.location.href = 'mailto:hello@catalect.com'
+        window.location.href = 'mailto:hello@catalect.bio'
           + '?subject=' + encodeURIComponent('Enquiry from ' + (get('company') || get('name') || 'the website'))
           + '&body=' + encodeURIComponent(body);
       });
