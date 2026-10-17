@@ -651,6 +651,17 @@ section[id] { scroll-margin-top: var(--header-h); }
 
 .form { display: grid; gap: 20px; }
 
+.form__sent {
+  grid-column: 1 / -1;
+  padding: 16px 20px;
+  background: var(--green-200);
+  border-radius: var(--radius);
+  color: var(--green-900);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
 .field { display: grid; gap: 8px; }
 
 .field label {

@@ -32,12 +32,20 @@ The header and footer markup is duplicated in both pages — edit both when chan
 
 ## Before going live
 
-- **Email address** — the form composes a message to `hello@catalect.bio`; change it in
-  the form script in `contact.html` if that is not the right inbox.
-- **Contact form** — with no `action` on the `<form>`, submitting composes the message in
-  the visitor's own mail client. For a real backend, set `action` (and `method="POST"`) on
-  the form in `contact.html` to a hosted handler (Formspree, Netlify Forms, your own API);
-  the script then steps aside automatically.
+- **Contact form** — posts to [FormSubmit](https://formsubmit.co), which relays it to
+  `jan@catalect.bio`. GitHub Pages serves static files only, so the form needs a handler
+  like this one; no account is required.
+
+  **Activate it once**: submit the form on the live site, then open the confirmation email
+  FormSubmit sends to `jan@catalect.bio` and click the link. Submissions arrive from then on.
+
+  Two things worth doing afterwards:
+
+  - The address sits in the form's `action`, where scrapers can read it. After activating,
+    FormSubmit gives you a random endpoint (`https://formsubmit.co/<hash>`) that hides it —
+    swap it into `contact.html`.
+  - To move to another handler (Formspree, your own API), change that one `action`; the
+    hidden `_subject` / `_next` / `_honey` fields are FormSubmit's and can go with it.
 - **Team roles** — both members are listed as "Co-founder" as a placeholder; change the
   role lines in the `#team` section of `index.html` to the actual titles.
 - **Fonts** — Figtree is loaded from Google Fonts. Self-host it if you'd rather not depend

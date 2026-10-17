@@ -36,12 +36,20 @@
   <main>
     <section class="section section--tint">
       <div class="container contact-grid">
+        <p class="form__sent" data-sent hidden>Thanks — your message is on its way. We will reply by email.</p>
+
         <div class="contact-aside">
           <h1>Get in touch.</h1>
           <p class="section__lead">We're interested in connecting with companies and researchers working on challenging biocatalytic applications.</p>
         </div>
 
-        <form class="form" data-contact-form>
+        <form class="form" action="https://formsubmit.co/jan@catalect.bio" method="POST" data-contact-form>
+          <input type="hidden" name="_subject" value="New enquiry via catalect.bio">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" data-next-url>
+          <input class="sr-only" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
           <div class="field field--row">
             <div class="field">
               <label for="name">Name</label>
@@ -100,30 +108,19 @@
   <script>
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
 
-    /* Without a form backend configured, compose the message in the visitor's
-       own mail client so nothing is silently dropped. Point the form's action
-       at a hosted handler (Formspree, Netlify Forms, your own API) when ready. */
+    /* FormSubmit relays the post to the inbox and sends the visitor back here;
+       the return URL has to be absolute, so it is filled in at run time. */
     (function () {
-      var form = document.querySelector('[data-contact-form]');
-      if (!form) return;
+      var next = document.querySelector('[data-next-url]');
+      if (next) next.value = location.origin + location.pathname + '?sent=1';
 
-      form.addEventListener('submit', function (event) {
-        if (form.getAttribute('action')) return;
-        event.preventDefault();
-
-        var get = function (name) { return (form.elements[name].value || '').trim(); };
-        var body = [
-          'Name: ' + get('name'),
-          'Company: ' + get('company'),
-          'Email: ' + get('email'),
-          '',
-          get('message')
-        ].join('\n');
-
-        window.location.href = 'mailto:hello@catalect.bio'
-          + '?subject=' + encodeURIComponent('Enquiry from ' + (get('company') || get('name') || 'the website'))
-          + '&body=' + encodeURIComponent(body);
-      });
+      if (new URLSearchParams(location.search).get('sent')) {
+        var note = document.querySelector('[data-sent]');
+        if (note) {
+          note.hidden = false;
+          note.scrollIntoView({ block: 'center' });
+        }
+      }
     })();
   </script>
 </body>
